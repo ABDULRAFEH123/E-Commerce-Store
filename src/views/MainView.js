@@ -1,10 +1,16 @@
-import { Link } from 'react-router-dom';
+
+// import Header from '../components/Header';
+import Hero from '../components/home/Hero'
+import Shop from '../components/home/Shop'
 
 const AdminView = props => {
 	return (
 		<>
-			<h2>Main View</h2>
-			<Link to='/auth'>Auth View</Link>
+			{/* <Header /> */}
+			<Hero />
+			<Shop />
+			<cardPaymnet/>
+			
 		</>
 	);
 };

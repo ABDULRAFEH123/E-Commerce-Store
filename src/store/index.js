@@ -1,36 +1,23 @@
-import { applyMiddleware, compose, createStore } from "redux";
-import rootReducer from "./reducers";
-import thunk from "redux-thunk";
-import CryptoJS from "crypto-js";
 
-const saveToLocalStorage = (state) => {
-  console.log(state.authUser);
-  const serializedUid = CryptoJS.AES.encrypt(
-    JSON.stringify(state.authUser),
-    "my-secret-key"
-  ).toString();
-  console.log(serializedUid);
-  localStorage.setItem("auth", serializedUid);
-};
+import { createStore, combineReducers } from 'redux';
 
-const checkLocalStorage = () => {
-  const serializedUid = localStorage.getItem("auth");
-  if (serializedUid === null) return undefined;
-  return {
-    authUser: JSON.parse(
-      CryptoJS.AES.decrypt(serializedUid, "my-secret-key").toString(
-        CryptoJS.enc.Utf8
-      )
-    ),
-  };
-};
+import shopReducer from '../store/reducers/index'
+import { counterReducer } from '../store/reducers/counterReducer';
+import { valueReducer } from '../store/reducers/shopifyReducer';
+import {itemReducer} from '../store/reducers/itemReducer';
+import {countItemReducer} from '../store/reducers/totalItemsReducer'
+import searchReducer from './reducers/searchReducer';
+import addToCartReducer from './reducers/addToCartReducer'
+const rootReducer = combineReducers({
+    shop: shopReducer,
+    counter: counterReducer,
+    value: valueReducer,
+    item: itemReducer,
+    quantity :countItemReducer,
+    search:searchReducer,
+    cartItems:addToCartReducer
+});
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-let store = createStore(
-  rootReducer,
-  checkLocalStorage(),
-  composeEnhancers(applyMiddleware(thunk))
-);
+const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
-store.subscribe(() => saveToLocalStorage(store.getState()));
 export default store;

@@ -4,11 +4,17 @@ import Auth from "./layout/Auth";
 import Main from "./layout/Main";
 import routes from "./routes";
 import store from "./store";
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
     return (
         <>
             <Provider store={store}>
+                <ToastContainer
+                position="top-left"
+                autoClose={3000} />
+
                 <BrowserRouter>
                     <Switch>
                         {routes.map((route) => {
@@ -40,3 +46,4 @@ function App() {
 }
 
 export default App;
+
